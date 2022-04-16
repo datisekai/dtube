@@ -45,7 +45,7 @@ const Header = () => {
 
     typeTimeOut.current = setTimeout(() => {
       navigate(`/search?query=${value}`)
-    },[500])
+    },500)
 
   }
   return (
