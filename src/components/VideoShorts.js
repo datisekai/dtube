@@ -6,9 +6,9 @@ import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
-import useElementOnScreen from '../hooks/useElementOnScreen'
+import useElementOnScreen from "../hooks/useElementOnScreen";
 
-const VideoShorts = ({ video,videos }) => {
+const VideoShorts = ({ video, videos }) => {
   const { user } = useSelector((state) => state.user);
   const [isLike, setIsLike] = useState(false);
   const [likeCount, setLikeCount] = useState(video.likes.length);
@@ -17,10 +17,10 @@ const VideoShorts = ({ video,videos }) => {
   const [playing, setPlaying] = useState(false);
   const options = {
     root: null,
-    rootMargin: '0px',
-    threshold: 0.3
-}
-const isVisibile = useElementOnScreen(options, videoRef)
+    rootMargin: "0px",
+    threshold: 0.3,
+  };
+  const isVisibile = useElementOnScreen(options, videoRef);
 
   useEffect(() => {
     if (user) {
@@ -31,18 +31,17 @@ const isVisibile = useElementOnScreen(options, videoRef)
 
   useEffect(() => {
     if (isVisibile) {
-      if (!playing) {        
+      if (!playing) {
         videoRef.current.play();
-        setPlaying(true)
+        setPlaying(true);
       }
-    }
-    else {
-      if (playing) {        
+    } else {
+      if (playing) {
         videoRef.current.pause();
-        setPlaying(false)
+        setPlaying(false);
       }
     }
-  }, [isVisibile])
+  }, [isVisibile]);
 
   useEffect(() => {
     const handleTime = () => {
@@ -53,13 +52,13 @@ const isVisibile = useElementOnScreen(options, videoRef)
         videoRef.current.removeEventListener("timeupdate", handleTime);
       }
     };
-    videoRef.current && videoRef.current.addEventListener("timeupdate", handleTime);
+    videoRef.current &&
+      videoRef.current.addEventListener("timeupdate", handleTime);
     return () => {
       videoRef.current &&
         videoRef.current.removeEventListener("timeupdate", handleTime);
     };
   }, []);
-
 
   const handleLike = async () => {
     if (user) {
@@ -99,29 +98,29 @@ const isVisibile = useElementOnScreen(options, videoRef)
     }
   };
   return (
-    <div className="flex justify-between w-[90%] lg:w-[300px] mx-auto mt-8 pb-5">
+    <div className='flex justify-between w-[90%] lg:w-[300px] mx-auto mt-8 pb-5'>
       <video
-        className="w-[80%] lg:w-[500px] rounded-lg aspect-[9/18]"
+        className='w-[80%] lg:w-[500px] rounded-lg aspect-[9/18]'
         src={video.video}
         controls
         ref={videoRef}
       ></video>
-      <div className="w-[10%] px-0 lg:px-2 lg:w-[100px] flex flex-col-reverse items-center">
+      <div className='w-[10%] px-0 lg:px-2 lg:w-[100px] flex flex-col-reverse items-center'>
         <div
-          className="text-center text-[#606060] cursor-pointer"
+          className='text-center text-[#606060] cursor-pointer'
           onClick={handleDisLike}
         >
           {!isDislike ? <ThumbDownAltOutlinedIcon /> : <ThumbDownAltIcon />}
 
-          <p className="text-center text-sm lg:text-md">Không thích</p>
+          <p className='text-center text-sm lg:text-md'>Không thích</p>
         </div>
         <div
-          className="text-center text-[#606060] cursor-pointer"
+          className='text-center text-[#606060] cursor-pointer'
           onClick={handleLike}
         >
           {!isLike ? <ThumbUpAltOutlinedIcon /> : <ThumbUpIcon />}
 
-          <p className="text-center">{likeCount}</p>
+          <p className='text-center'>{likeCount}</p>
         </div>
       </div>
     </div>

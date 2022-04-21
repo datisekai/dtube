@@ -10,6 +10,8 @@ import typeReducer from "./typeReducer";
 import userReducer from "./userReducer";
 import videoReducer from "./videoReducer";
 import modalProfileReducer from './modalProfileReducer'
+import modalUpdateVideo from "./modalUpdateVideo";
+import userChannelReducer from './userChannel'
 const store = configureStore({
   reducer: {
     sidebar: sidebarReducer,
@@ -22,7 +24,9 @@ const store = configureStore({
     follow:followReducer,
     like:likeReducer,
     saveVideo:saveVideoReducer,
-    modalProfile:modalProfileReducer
+    modalProfile:modalProfileReducer,
+    modalUpdateVideo:modalUpdateVideo,
+    userChannel:userChannelReducer
   },
 });
 

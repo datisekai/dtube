@@ -14,20 +14,22 @@ import Detail from "./pages/Detail";
 import PlayList from "./pages/PlayList";
 import PlayLike from "./pages/PlayLike";
 import MyVideo from "./pages/MyVideo";
-import PrivateRoute from './utils/PrivateRoute'
-import Recently from './pages/Recently'
+import PrivateRoute from "./utils/PrivateRoute";
+import Recently from "./pages/Recently";
 import Subscription from "./pages/Subscription";
 import Popular from "./pages/Popular";
 import Shorts from "./pages/Shorts";
 import Search from "./pages/Search";
+import Page404 from "./pages/404";
+import Router from "./routes";
 function App() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 
-  axios.defaults.baseURL = "https://dtube-server.vercel.app";
+  axios.defaults.baseURL = "http://localhost:7098";
   useEffect(() => {
-    dispatch(getType())
-  },[])
+    dispatch(getType());
+  }, []);
 
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
@@ -40,22 +42,9 @@ function App() {
     return <Loading />;
 
   return (
-    <div className="App">
+    <div className='App'>
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/play-list" element={<PrivateRoute><PlayList/></PrivateRoute>}></Route>
-        <Route path="/subscription" element={<PrivateRoute><Subscription/></PrivateRoute>}></Route>
-        <Route path="/popular" element={<Popular/>}></Route>
-        <Route path="/shorts" element={<Shorts/>}></Route>
-        <Route path="/my-video" element={<PrivateRoute><MyVideo/></PrivateRoute>}></Route>
-        <Route path="/play-like" element={<PrivateRoute><PlayLike/></PrivateRoute>}></Route>
-        <Route path="/history" element={<Recently/>}></Route>
-        <Route path="/channel/:id/*" element={<Channel />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/watch/:id" element={<Detail />}></Route>
-        <Route path="/search" element={<Search />}></Route>
-      </Routes>
+      <Router />
     </div>
   );
 }

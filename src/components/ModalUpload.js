@@ -27,7 +27,6 @@ const ModalUpload = ({ onFile, onFileAvatar,formik,preview,type,percent,loadingU
     display: "none",
   });
   return (
-    <div className="flex justify-center items-center">
     <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
@@ -192,7 +191,6 @@ const ModalUpload = ({ onFile, onFileAvatar,formik,preview,type,percent,loadingU
         </Box>
       </Fade>
     </Modal>
-  </div>
   )
 }
 

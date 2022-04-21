@@ -7,7 +7,7 @@ const ItemSidebar = ({ content, icon, size, link }) => {
       to={`${link}`}
       
       className={
-        "flex items-center w-full h-full hover:bg-[#E5E5E5] transition-all cursor-pointer px-10 py-2 "
+        "flex items-center w-full h-full hover:bg-[#E5E5E5] transition-all cursor-pointer px-5 lg:px-10 py-2 "
       }
     >
       <i className={`text-${size || "lg"} text-center w-[30%] ${icon}`}></i>

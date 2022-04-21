@@ -1,47 +1,45 @@
+import styled from "@emotion/styled";
 import { PhotoCamera } from "@mui/icons-material";
-import SendIcon from "@mui/icons-material/Send";
 import { LoadingButton } from "@mui/lab";
-import { Avatar, IconButton, Input, TextField } from "@mui/material";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import {
+  Avatar,
+  Modal,
+  TextField,
+  Typography,
+  IconButton,
+  TextareaAutosize,
+} from "@mui/material";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setDisplayUpdate } from "../redux/modalUpdateVideo";
+import { Box } from "@mui/system";
+import SendIcon from "@mui/icons-material/Send";
+import axios from "axios";
 import axiosImage from "../api/axiosImage";
-import { setDisPlayProfile } from "../redux/modalProfileReducer";
-import { getUser } from "../redux/userReducer";
 import setHeaderAxios from "../utils/setHeaderAxios";
 import { toast } from "react-toastify";
-import { setUser } from "../redux/userChannel";
+import { setVideo as setMyVideo } from "../redux/myVideoReducer";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "100%",
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-};
-
-const ModalProfile = () => {
-  const [name, setName] = useState("");
+const ModalUpdateVideo = () => {
+  const { display, id } = useSelector((state) => state.modalUpdateVideo);
   const [file, setFile] = useState("");
-  const [image, setImage] = useState();
   const dispatch = useDispatch();
+  const { videos } = useSelector((state) => state.myVideo);
   const [load, setLoad] = useState(false);
-  const { display } = useSelector((state) => state.modalProfile);
-  const { user } = useSelector((state) => state.user);
-  const userChannel = useSelector((state) => state.userChannel.user);
+  const [video, setVideo] = useState();
+  const [image, setImage] = useState("");
+
+  const [desc, setDesc] = useState();
+  const [title, setTitle] = useState();
 
   useEffect(() => {
-    if (user) {
-      setImage(user?.avatar);
-      setName(user.name || user.email.slice(0, user.email.indexOf("@")));
+    if (videos && id) {
+      const video = videos.find((item) => item._id === id);
+      setVideo(video);
+      setDesc(video.desc);
+      setTitle(video.title);
     }
-  }, [user]);
+  }, [id]);
 
   useEffect(() => {
     if (file) {
@@ -57,8 +55,20 @@ const ModalProfile = () => {
     };
   };
 
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "100%",
+    bgcolor: "white",
+    boxShadow: 24,
+    borderRadius: "8px",
+    p: 4,
+  };
+
   const handleUpdate = async () => {
-    if (name) {
+    if (title && desc) {
       setLoad(true);
       try {
         let resCloud;
@@ -70,18 +80,27 @@ const ModalProfile = () => {
           resCloud = await axiosImage.post("/", formData);
           setHeaderAxios(sessionStorage.getItem("token"));
         }
-        const res = await axios.put("/auth/user", {
-          name,
-          avatar: resCloud ? resCloud.data.url : undefined,
+        const res = await axios.put(`/video/${id}`, {
+          title,
+          desc,
+          image: resCloud ? resCloud.data.url : undefined,
         });
         if (res.data.success) {
-          dispatch(setDisPlayProfile(false));
+          dispatch(setDisplayUpdate(false));
           dispatch(
-            setUser({
-              ...userChannel,
-              name,
-              avatar: resCloud ? resCloud.data.url : userChannel.avatar || "",
-            })
+            setMyVideo(
+              videos?.map((item) => {
+                if (item._id === id) {
+                  return {
+                    ...item,
+                    title,
+                    desc,
+                    image: resCloud ? resCloud.data.url : video.image,
+                  };
+                }
+                return item;
+              })
+            )
           );
         }
       } catch (err) {
@@ -89,25 +108,30 @@ const ModalProfile = () => {
         setLoad(false);
       }
     } else {
-      toast.error("Vui lòng nhập tên");
+      toast.error("Vui lòng không bỏ trống");
     }
   };
+
+  const Input = styled("input")({
+    display: "none",
+  });
+
   return (
     <Modal
       open={display}
-      onClose={() => dispatch(setDisPlayProfile(false))}
+      onClose={() => dispatch(setDisplayUpdate(false))}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       className="w-[90%] md:w-[500px] mx-auto"
     >
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          Quản lý profile
+          Quản lý video
         </Typography>
         <div className="flex justify-center items-center mt-3 relative">
           <Avatar
             alt="Remy Sharp"
-            src={image || "/static/images/avatar/2.jpg"}
+            src={image || video?.image || video?.video?.replace("mp4", "jpg")}
             sx={{ width: "100px", height: "100px" }}
           />
           <label htmlFor="icon-button-file" className="absolute">
@@ -133,10 +157,24 @@ const ModalProfile = () => {
           <TextField
             fullWidth
             id="outlined-basic"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            label="Tên"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            label="Tiêu đề"
             variant="outlined"
+          />
+        </div>
+        <div className="mt-5">
+          <TextareaAutosize
+            aria-label="minimum height"
+            minRows={3}
+            placeholder="Minimum 3 rows"
+            style={{
+              width: "100%",
+              border: "1px solid #ccc",
+              padding: "4px 8px",
+            }}
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
           />
         </div>
         <div className="mt-5">
@@ -157,4 +195,4 @@ const ModalProfile = () => {
   );
 };
 
-export default ModalProfile;
+export default ModalUpdateVideo;
