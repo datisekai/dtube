@@ -26,7 +26,8 @@ function App() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 
-  axios.defaults.baseURL = "http://localhost:7098";
+  axios.defaults.baseURL =
+    "https://dtube-server-production-b434.up.railway.app";
   useEffect(() => {
     dispatch(getType());
   }, []);
