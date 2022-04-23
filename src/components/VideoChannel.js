@@ -39,7 +39,7 @@ const VideoChannel = ({ onDelete, video }) => {
             </div>
           </div>
         </Link>
-        {user?._id === video.userId._id && (
+        {user && user?._id === video.userId._id && (
           <div className='mt-3'>
             <i
               className=' text-lg px-2 py-1 hover:cursor-pointer fa-solid fa-ellipsis-vertical'

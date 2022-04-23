@@ -227,7 +227,9 @@ const Detail = () => {
             <div className='flex justify-between'>
               <div className='flex items-center'>
                 <Avatar
-                  onClick={() => navigate(`/channel/${data?.video?.userId}`)}
+                  onClick={() =>
+                    navigate(`/channel/${data?.video?.userId?._id}`)
+                  }
                   alt='Remy Sharp'
                   src={
                     data?.video?.userId?.avatar || "/static/images/avatar/1.jpg"
@@ -236,7 +238,9 @@ const Detail = () => {
                 />
                 <div
                   className=' ml-3 cursor-pointer'
-                  onClick={() => navigate(`/channel/${data?.video?.userId}`)}
+                  onClick={() =>
+                    navigate(`/channel/${data?.video?.userId?._id}`)
+                  }
                 >
                   {" "}
                   <h3 className='capitalize font-medium text-lg'>
