@@ -17,7 +17,7 @@ const VideoChannel = ({ onDelete, video }) => {
 
   const { user } = useSelector((state) => state.user);
 
-  console.log(video);
+  console.log(user, video);
 
   return (
     <>
@@ -29,7 +29,7 @@ const VideoChannel = ({ onDelete, video }) => {
               className={"w-[140px] md:w-[250px] aspect-[16/9] object-cover"}
             />
             <div className='ml-3'>
-              <h2 className='text-xl'>{video?.title}</h2>
+              <h2 className='text-md'>{video?.title}</h2>
               <div className='flex items-center text-gray-600 text-xs mt-0'>
                 <p>{video?.view} lượt xem</p>
                 <span className='px-2'>-</span>
@@ -39,7 +39,7 @@ const VideoChannel = ({ onDelete, video }) => {
             </div>
           </div>
         </Link>
-        {user?._id === video?.userId && (
+        {user?._id === video.userId._id && (
           <div className='mt-3'>
             <i
               className=' text-lg px-2 py-1 hover:cursor-pointer fa-solid fa-ellipsis-vertical'
