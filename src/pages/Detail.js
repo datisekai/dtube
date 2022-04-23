@@ -183,7 +183,7 @@ const Detail = () => {
             controls
             ref={inputVideo}
           ></video>
-          <h1 className='text-xl lg:text-2xl mt-3 capitalize'>
+          <h1 className='text-lg lg:text-xl mt-3 capitalize'>
             {data?.video?.title}
           </h1>
           <div className='flex flex-col lg:flex-row justify-between items-center border-b pb-2'>
