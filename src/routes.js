@@ -53,6 +53,7 @@ const Router = () => {
     { path: "/login", element: <Login /> },
     { path: "/register", element: <Register /> },
     { path: "/search", element: <Search /> },
+    { path: "/watch/:id/:slug", element: <Detail /> },
     { path: "/watch/:id", element: <Detail /> },
     { path: "/channel/:id/*", element: <Channel /> },
     {

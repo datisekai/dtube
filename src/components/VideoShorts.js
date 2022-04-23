@@ -100,7 +100,7 @@ const VideoShorts = ({ video, videos }) => {
   return (
     <div className='flex justify-between w-[90%] lg:w-[300px] mx-auto mt-8 pb-5'>
       <video
-        className='w-[80%] lg:w-[500px] rounded-lg aspect-[9/18]'
+        className='w-[80%] lg:w-[500px] rounded-lg aspect-[9/20]'
         src={video.video}
         controls
         ref={videoRef}

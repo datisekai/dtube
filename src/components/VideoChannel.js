@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { setDisplayUpdate, setIdUpdate } from "../redux/modalUpdateVideo";
-import { convertTime } from "../utils/base";
+import { convertTime, to_slug } from "../utils/base";
 import ImgLazy from "../utils/ImgLazy";
 
 const VideoChannel = ({ onDelete, video }) => {
@@ -22,7 +22,7 @@ const VideoChannel = ({ onDelete, video }) => {
   return (
     <>
       <div className='flex justify-between items-start'>
-        <Link to={`/watch/${video?._id}`}>
+        <Link to={`/watch/${video?._id}/${to_slug(video?.title)}`}>
           <div className='flex mt-3 cursor-pointer'>
             <ImgLazy
               lazy_src={video?.image || video?.video?.replace("mp4", "jpg")}

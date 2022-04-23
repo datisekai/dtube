@@ -6,7 +6,7 @@ import { Avatar, Button } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Comments from "../components/Comments";
 import SameDetail from "../components/SameDetail";
@@ -41,6 +41,7 @@ const Detail = () => {
   const { followCount, isFollow } = useSelector((state) => state.follow);
   const { likeCount, isLike, isDislike } = useSelector((state) => state.like);
   const { isSaveVideo } = useSelector((state) => state.saveVideo);
+  const navigate = useNavigate();
 
   const inputVideo = useRef(null);
 
@@ -98,7 +99,7 @@ const Detail = () => {
     if (data) {
       setLocal(data.video);
     }
-  }, [id,data]);
+  }, [id, data]);
 
   const handleFollow = () => {
     if (user) {
@@ -146,7 +147,6 @@ const Detail = () => {
     }
   }, [id, data]);
 
-
   const getVideoSame = async () => {
     try {
       const res = await axios.get(`/video/videos/type/${data.video.type}`);
@@ -171,75 +171,82 @@ const Detail = () => {
   };
 
   return (
-    <div className="flex justify-between min-h-screen">
+    <div className='flex justify-between min-h-screen'>
       <Sidebar />
-      <div className="hidden lg:block w-[17%]"></div>
-      <div className="w-[100%] lg:w-[75%] xl:w-[83%]  bg-[#F9F9F9] flex flex-col lg:flex-row justify-between p-5 lg:p-8 relative">
-        {loading && <LoadingPart/>}
-        <div className="w-full lg:w-[65%]">
+      <div className='hidden lg:block w-[17%]'></div>
+      <div className='w-[100%] lg:w-[75%] xl:w-[83%]  bg-[#F9F9F9] flex flex-col lg:flex-row justify-between p-5 lg:p-8 relative'>
+        {loading && <LoadingPart />}
+        <div className='w-full lg:w-[65%]'>
           <video
             src={data?.video?.video}
-            className="w-full aspect-video"
+            className='w-full aspect-video'
             controls
             ref={inputVideo}
           ></video>
-          <h1 className="text-xl lg:text-2xl mt-3 capitalize">
+          <h1 className='text-xl lg:text-2xl mt-3 capitalize'>
             {data?.video?.title}
           </h1>
-          <div className="flex flex-col lg:flex-row justify-between items-center border-b pb-2">
-            <div className="flex items-center mt-2 text-[#606060]">
+          <div className='flex flex-col lg:flex-row justify-between items-center border-b pb-2'>
+            <div className='flex items-center mt-2 text-[#606060]'>
               <p>{data?.video?.view} lượt xem - </p>
-              <p className="ml-1">{convertTime(data?.video?.createdAt)}</p>
+              <p className='ml-1'>{convertTime(data?.video?.createdAt)}</p>
             </div>
-            <div className="flex items-center text-sm mt-3 lg:text-md lg:mt-0">
+            <div className='flex items-center text-sm mt-3 lg:text-md lg:mt-0'>
               <div
                 onClick={handleLike}
-                className="flex items-center ml-1 px-3 cursor-pointer flex-col lg:flex-row"
-                title="Tôi thích video này"
+                className='flex items-center ml-1 px-3 cursor-pointer flex-col lg:flex-row'
+                title='Tôi thích video này'
               >
                 {!isLike ? <ThumbUpOutlinedIcon /> : <ThumbUpAltIcon />}
-                <p className="uppercase text-[#0303030] ml-2">{likeCount}</p>
+                <p className='uppercase text-[#0303030] ml-2'>{likeCount}</p>
               </div>
               <div
                 onClick={handleDisLike}
-                className="flex items-center ml-1 px-3 cursor-pointer flex-col lg:flex-row"
-                title="Tôi không thích video này"
+                className='flex items-center ml-1 px-3 cursor-pointer flex-col lg:flex-row'
+                title='Tôi không thích video này'
               >
                 {!isDislike ? (
                   <ThumbDownOffAltOutlinedIcon />
                 ) : (
                   <ThumbDownIcon />
                 )}
-                <p className="uppercase text-[#0303030] ml-2">KHÔNG THÍCH</p>
+                <p className='uppercase text-[#0303030] ml-2'>KHÔNG THÍCH</p>
               </div>
               <div
-                className="flex items-center ml-1 px-3 cursor-pointer flex-col lg:flex-row"
-                title="Lưu"
+                className='flex items-center ml-1 px-3 cursor-pointer flex-col lg:flex-row'
+                title='Lưu'
                 onClick={handleSaveVideo}
               >
                 {!isSaveVideo ? <PlaylistAddIcon /> : <PlaylistAddCheckIcon />}
-                <p className="uppercase text-[#0303030] ml-2">LƯU</p>
+                <p className='uppercase text-[#0303030] ml-2'>LƯU</p>
               </div>
             </div>
           </div>
 
-          <div className="mt-4 mb-2">
-            <div className="flex justify-between">
-              <div className="flex items-center">
+          <div className='mt-4 mb-2'>
+            <div className='flex justify-between'>
+              <div className='flex items-center'>
                 <Avatar
-                  alt="Remy Sharp"
-                  src={data?.video?.userId?.avatar || "/static/images/avatar/1.jpg"}
+                  onClick={() => navigate(`/channel/${data?.video?.userId}`)}
+                  alt='Remy Sharp'
+                  src={
+                    data?.video?.userId?.avatar || "/static/images/avatar/1.jpg"
+                  }
                   sx={{ width: 45, height: 45 }}
                 />
-                <div className=" ml-3 ">
+                <div
+                  className=' ml-3 cursor-pointer'
+                  onClick={() => navigate(`/channel/${data?.video?.userId}`)}
+                >
                   {" "}
-                  <h3 className="capitalize font-medium text-lg">
-                    {data?.video?.userId?.name || data?.video?.userId?.email?.slice(
-                      0,
-                      data?.video?.userId?.email?.indexOf("@")
-                    )}
+                  <h3 className='capitalize font-medium text-lg'>
+                    {data?.video?.userId?.name ||
+                      data?.video?.userId?.email?.slice(
+                        0,
+                        data?.video?.userId?.email?.indexOf("@")
+                      )}
                   </h3>
-                  <p className="text-[#606060]">
+                  <p className='text-[#606060]'>
                     {followCount || 0} người đăng ký
                   </p>
                 </div>
@@ -250,7 +257,7 @@ const Detail = () => {
                   onClick={
                     isFollow ? () => handleUnFollow() : () => handleFollow()
                   }
-                  variant="contained"
+                  variant='contained'
                   color={`${isFollow ? "inherit" : "error"}`}
                 >
                   {isFollow ? "Hủy đăng ký" : "Đăng ký"}
@@ -258,15 +265,15 @@ const Detail = () => {
               )}
             </div>
           </div>
-          <div className="flex items-center pt-3 pb-5">
-            <div className="w-[45px] h-[45px]"></div>
-            <p className="ml-3 text-[#303030]">{data?.video?.desc}</p>
+          <div className='flex items-center pt-3 pb-5'>
+            <div className='w-[45px] h-[45px]'></div>
+            <p className='ml-3 text-[#303030]'>{data?.video?.desc}</p>
           </div>
-          <div className="border-t">
+          <div className='border-t'>
             <Comments />
           </div>
         </div>
-        <div className="w-full lg:w-[35%]">
+        <div className='w-full lg:w-[35%]'>
           <SameDetail videos={sameVideo && sameVideo} detailId={id} />
         </div>
       </div>
