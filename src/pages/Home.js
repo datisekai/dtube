@@ -10,6 +10,7 @@ import useQuery from "../hooks/useQuery";
 import { useDispatch } from "react-redux";
 import { setVideo } from "../redux/videoReducer";
 import Loading from "../utils/Loading";
+import { scrollTop } from "../utils/scrollTop";
 
 const Home = () => {
   const [value, setValue] = useState("");
@@ -19,6 +20,10 @@ const Home = () => {
   const dispatch = useDispatch();
   const { videos } = useSelector((state) => state.video);
   const limit = 8;
+
+  useEffect(() => {
+    scrollTop();
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -40,9 +45,9 @@ const Home = () => {
   };
 
   return (
-    <div className="flex justify-between min-h-screen">
+    <div className='flex justify-between min-h-screen'>
       <Sidebar />
-      <div className="hidden lg:block w-[17%]"></div>
+      <div className='hidden lg:block w-[17%]'></div>
       <Videos
         onClickSetValue={handleSetValue}
         onNextPage={handleSetPage}
