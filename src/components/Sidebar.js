@@ -17,7 +17,7 @@ const Sidebar = () => {
         ></div>
       )}
       <div
-        className={`w-[60%] sm:w-[50%] md:w-[35%] bg-white lg:w-[25%] xl:w-[17%] top-0 min-h-full fixed inset-0 lg:block z-[100] ${
+        className={`w-[60%] sm:w-[50%] ease-in md:w-[35%] bg-white lg:w-[25%] xl:w-[17%] top-0 min-h-full fixed inset-0 lg:block z-[100] ${
           display ? "block" : "hidden"
         } border-r`}
       >

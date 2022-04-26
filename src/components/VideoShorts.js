@@ -17,8 +17,8 @@ const VideoShorts = ({ video, videos }) => {
   const [playing, setPlaying] = useState(false);
   const options = {
     root: null,
-    rootMargin: "0px",
-    threshold: 0.3,
+    rootMargin: "20px",
+    threshold: 0.7,
   };
   const isVisibile = useElementOnScreen(options, videoRef);
 
