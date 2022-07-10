@@ -11,8 +11,7 @@ function App() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 
-  axios.defaults.baseURL =
-    "https://dtube-server-production-b434.up.railway.app";
+  axios.defaults.baseURL = "https://dtube-server.vercel.app";
   useEffect(() => {
     dispatch(getType());
   }, []);
